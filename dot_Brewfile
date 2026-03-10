@@ -1,6 +1,8 @@
 # CLI tools
 brew "neovim"       # Neovim
+brew "vim"          # Vim
 brew "lsd"          # ls の代替
+brew "bat"          # cat の代替
 brew "ripgrep"      # 高速grep
 brew "fd"           # 高速ファイル検索
 brew "fzf"          # ファジーファインダー
@@ -8,6 +10,12 @@ brew "zoxide"       # スマートなcd
 brew "ghq"          # リポジトリ管理
 brew "git-delta"    # diff表示
 brew "yazi"         # ファイラー
+brew "jq"           # JSON処理
+brew "gh"           # GitHub CLI
+brew "lazygit"      # Git TUI
+brew "zellij"       # ターミナルマルチプレクサ
+brew "mise"         # ツールバージョン管理
+brew "pnpm"         # パッケージマネージャ
 
 # GUI apps (Cask)
 cask "ghostty"
