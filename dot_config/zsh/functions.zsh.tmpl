@@ -1,33 +1,7 @@
-# gitリポジトリ/worktreeをfzfで選択してcd
-# 通常リポジトリは緑色、worktreeは黄色で表示
-# 現在のリポジトリと関連worktreeを上位に表示
-# worktreeは親リポジトリの直下にグループ化
+# ghqで管理しているリポジトリをfzfで選択してcd
 repo() {
-    local selected current_git_common
-    current_git_common=$(git rev-parse --git-common-dir 2>/dev/null | xargs -I{} realpath {} 2>/dev/null)
-
-    selected=$(fd --type f --type d --hidden --no-ignore \
-        '^\.git$' ~/Documents --max-depth 5 2>/dev/null | \
-        while read -r gitpath; do
-            dir=$(dirname "$gitpath")
-            name=$(basename "$dir")
-            if [[ -d "$gitpath" ]]; then
-                git_common=$(realpath "$gitpath" 2>/dev/null)
-                printf '%s\t0\t%s\t\033[32m%s\033[0m\n' "$git_common" "$dir" "$name"
-            else
-                git_common=$(git -C "$dir" rev-parse --git-common-dir 2>/dev/null | xargs -I{} realpath {} 2>/dev/null)
-                printf '%s\t1\t%s\t\033[33m↳ %s\033[0m\n' "$git_common" "$dir" "$name"
-            fi
-        done | \
-        awk -F'\t' -v cur="$current_git_common" '{
-            if ($1 == cur) print "0\t" $0
-            else print "1\t" $0
-        }' | \
-        sort -t$'\t' -k1,1 -k2,2 -k3,3n -k5 | \
-        cut -f4- | \
-        fzf --ansi --height 40% --reverse --delimiter=$'\t' --with-nth=2 --preview 'ls -la {1}' | \
-        cut -f1)
-
+    local selected
+    selected=$(ghq list --full-path | fzf --height 40% --reverse --query "$1" --preview 'ls -la {}')
     if [[ -n "$selected" ]]; then
         cd "$selected" || return 1
     fi
@@ -155,4 +129,9 @@ rgf() {
         line=$(echo "$result" | cut -d: -f2)
         nvim "+$line" "$file"
     fi
+}
+
+# nix-darwin rebuild
+rebuild() {
+    darwin-rebuild switch --flake ~/.dotfiles
 }
