@@ -1,3 +1,6 @@
+[core]
+    pager = delta
+
 [pager]
     diff = delta
     log = delta
@@ -5,14 +8,19 @@
     show = delta
 
 [delta]
-    plus-style = "syntax #012800"
-    minus-style = "syntax #340001"
-    syntax-theme = Monokai Extended
     navigate = true
-    diff-so-fancy=true
-    keep-plus-minus-markers=true
-    hunk-header-style="omit"
-    line-numbers=true
+    light = false
+    line-numbers = true
+    syntax-theme = Monokai Extended
 
 [interactive]
     diffFilter = delta --color-only
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[ghq]
+    root = ~/src
